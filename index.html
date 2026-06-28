@@ -76,6 +76,44 @@ background:#00e676;
 <button>🏆 Leaderboard</button>
 
 <button>👤 Profile</button>
+<script>
 
+let mining=false;
+let seconds=86400;
+
+function startMining(){
+
+if(mining) return;
+
+mining=true;
+
+document.getElementById("mineBtn").innerHTML="⛏️ Mining Started";
+
+let timer=setInterval(function(){
+
+let h=Math.floor(seconds/3600);
+let m=Math.floor((seconds%3600)/60);
+let s=seconds%60;
+
+document.getElementById("timer").innerHTML=
+h+"h "+m+"m "+s+"s";
+
+seconds--;
+
+if(seconds<0){
+
+clearInterval(timer);
+
+document.getElementById("timer").innerHTML="✅ Claim Your Coins";
+
+document.getElementById("mineBtn").innerHTML="💰 Claim";
+
+}
+
+},1000);
+
+}
+
+</script>
 </body>
 </html>
