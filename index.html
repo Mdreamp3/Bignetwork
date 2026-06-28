@@ -154,7 +154,8 @@ let mining=false;
 let seconds=86400;
 
 let coins=localStorage.getItem("coins") || 0;
-
+let boxSeconds = 3600;
+let boxInterval = null;
 
 document.getElementById("coins").innerHTML=coins;
 
