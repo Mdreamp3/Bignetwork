@@ -80,6 +80,7 @@ background:#00e676;
 
 let mining = false;
 let seconds = 86400;
+  let boxReady = false;
 let coins = localStorage.getItem("coins") || 0;
 
 document.getElementById("coins").innerHTML = coins;
@@ -94,7 +95,28 @@ mining=true;
 document.getElementById("mineBtn").innerHTML="⛏️ Mining Started";
 
 
-let timer=setInterval(function(){
+let timer=setInterval(function(){let timer=setInterval(function(){
+
+
+let h=Math.floor(seconds/3600);
+let m=Math.floor((seconds%3600)/60);
+let s=seconds%60;
+
+
+document.getElementById("timer").innerHTML =
+h+"h "+m+"m "+s+"s";
+
+
+seconds--;
+
+
+if(seconds < 0){
+
+clearInterval(timer);
+
+}
+
+},1000);
 
 let h=Math.floor(seconds/3600);
 let m=Math.floor((seconds%3600)/60);
