@@ -214,11 +214,20 @@ localStorage.getItem("boxTime");
 let now=Date.now();
 
 
-if(last && now-last < 3600000){
+if(last){
 
-alert("⏰ Mystery Box 1 hour ke baad unlock hoga");
+let remain = 3600000 - (now - last);
+
+if(remain > 0){
+
+let m = Math.floor(remain / 60000);
+let s = Math.floor((remain % 60000) / 1000);
+
+alert("⏰ Mystery Box Unlock: "+m+"m "+s+"s");
 
 return;
+
+}
 
 }
 
