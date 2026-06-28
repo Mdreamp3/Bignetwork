@@ -78,6 +78,128 @@ background:#00e676;
 <button>👤 Profile</button>
 <script>
 
+let mining = false;
+let seconds = 3600;
+let coins = localStorage.getItem("coins") || 0;
+
+document.getElementById("coins").innerHTML = coins;
+
+
+function startMining(){
+
+if(mining) return;
+
+mining=true;
+
+document.getElementById("mineBtn").innerHTML="⛏️ Mining Started";
+
+
+let timer=setInterval(function(){
+
+let h=Math.floor(seconds/3600);
+let m=Math.floor((seconds%3600)/60);
+let s=seconds%60;
+
+
+document.getElementById("timer").innerHTML =
+h+"h "+m+"m "+s+"s";
+
+
+seconds--;
+
+
+if(seconds < 0){
+
+clearInterval(timer);
+
+document.getElementById("timer").innerHTML =
+"✅ Claim Your Coins";
+
+document.getElementById("mineBtn").innerHTML =
+"💰 Claim";
+
+
+document.getElementById("mineBtn").onclick=claimCoins;
+
+
+}
+
+},1000)
+
+}
+
+
+
+function claimCoins(){
+
+coins = Number(coins)+100;
+
+localStorage.setItem("coins",coins);
+
+
+document.getElementById("coins").innerHTML=coins;
+
+
+document.getElementById("timer").innerHTML =
+"Ready For Next Mining";
+
+
+document.getElementById("mineBtn").innerHTML =
+"⛏️ Start Mining";
+
+
+mining=false;
+seconds=3600;
+
+document.getElementById("mineBtn").onclick=startMining;
+
+}
+
+
+
+function mysteryBox(){
+
+let last =
+localStorage.getItem("boxTime");
+
+
+let now=Date.now();
+
+
+if(last && now-last < 3600000){
+
+alert("⏰ Mystery Box 1 hour ke baad unlock hoga");
+
+return;
+
+}
+
+
+let ad =
+confirm("📺 Watch Ad to open Mystery Box");
+
+
+if(ad){
+
+coins = Number(coins)+50;
+
+localStorage.setItem("coins",coins);
+
+localStorage.setItem("boxTime",now);
+
+
+document.getElementById("coins").innerHTML=coins;
+
+
+alert("🎁 Mystery Box +50 Coins");
+
+}
+
+}
+
+
+</script>
+
 let mining=false;
 let seconds=86400;
 
@@ -113,6 +235,128 @@ document.getElementById("mineBtn").innerHTML="💰 Claim";
 },1000);
 
 }
+
+<script>
+
+let mining = false;
+let seconds = 3600;
+let coins = localStorage.getItem("coins") || 0;
+
+document.getElementById("coins").innerHTML = coins;
+
+
+function startMining(){
+
+if(mining) return;
+
+mining=true;
+
+document.getElementById("mineBtn").innerHTML="⛏️ Mining Started";
+
+
+let timer=setInterval(function(){
+
+let h=Math.floor(seconds/3600);
+let m=Math.floor((seconds%3600)/60);
+let s=seconds%60;
+
+
+document.getElementById("timer").innerHTML =
+h+"h "+m+"m "+s+"s";
+
+
+seconds--;
+
+
+if(seconds < 0){
+
+clearInterval(timer);
+
+document.getElementById("timer").innerHTML =
+"✅ Claim Your Coins";
+
+document.getElementById("mineBtn").innerHTML =
+"💰 Claim";
+
+
+document.getElementById("mineBtn").onclick=claimCoins;
+
+
+}
+
+},1000)
+
+}
+
+
+
+function claimCoins(){
+
+coins = Number(coins)+100;
+
+localStorage.setItem("coins",coins);
+
+
+document.getElementById("coins").innerHTML=coins;
+
+
+document.getElementById("timer").innerHTML =
+"Ready For Next Mining";
+
+
+document.getElementById("mineBtn").innerHTML =
+"⛏️ Start Mining";
+
+
+mining=false;
+seconds=3600;
+
+document.getElementById("mineBtn").onclick=startMining;
+
+}
+
+
+
+function mysteryBox(){
+
+let last =
+localStorage.getItem("boxTime");
+
+
+let now=Date.now();
+
+
+if(last && now-last < 3600000){
+
+alert("⏰ Mystery Box 1 hour ke baad unlock hoga");
+
+return;
+
+}
+
+
+let ad =
+confirm("📺 Watch Ad to open Mystery Box");
+
+
+if(ad){
+
+coins = Number(coins)+50;
+
+localStorage.setItem("coins",coins);
+
+localStorage.setItem("boxTime",now);
+
+
+document.getElementById("coins").innerHTML=coins;
+
+
+alert("🎁 Mystery Box +50 Coins");
+
+}
+
+}
+
 
 </script>
 </body>
