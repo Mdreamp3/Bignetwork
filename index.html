@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
 
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>BigNetwork</title>
-
 
 <style>
 
@@ -19,49 +16,30 @@ color:white;
 text-align:center;
 }
 
-
 .header{
-
 background:#161b22;
 padding:20px;
 font-size:28px;
 font-weight:bold;
-
 }
-
 
 .card{
-
 background:#1f2937;
-margin:20px;
+margin:15px;
 padding:20px;
 border-radius:15px;
-
 }
-
 
 button{
-
 width:90%;
 padding:15px;
-margin:10px;
-
-border:none;
+margin:8px;
+border:0;
 border-radius:12px;
-
 font-size:18px;
 font-weight:bold;
-
 background:#00c853;
 color:white;
-
-}
-
-
-button:hover{
-
-background:#00e676;
-
 }
 
 
@@ -74,9 +52,7 @@ background:#00e676;
 
 
 <div class="header">
-
 🚀 BigNetwork
-
 </div>
 
 
@@ -97,14 +73,12 @@ background:#00e676;
 </button>
 
 
-
-
 <div class="card">
 
-<h2>Mining Status</h2>
+<h2>⛏ Mining Timer</h2>
 
 <h3 id="timer">
-Not Started
+Ready
 </h3>
 
 </div>
@@ -114,6 +88,8 @@ Not Started
 <button onclick="mysteryBox()">
 📦 Mystery Box
 </button>
+
+
 <div class="card">
 
 <h2>📦 Mystery Box Timer</h2>
@@ -124,24 +100,30 @@ Ready
 
 </div>
 
-<button>
+
+
+<button onclick="dailyReward()">
 🎁 Daily Reward
 </button>
 
 
-<button>
+
+<button onclick="inviteFriends()">
 👥 Invite Friends
 </button>
 
 
-<button>
+
+<button onclick="leaderboard()">
 🏆 Leaderboard
 </button>
 
 
-<button>
+
+<button onclick="profile()">
 👤 Profile
 </button>
+
 
 
 
@@ -149,41 +131,43 @@ Ready
 <script>
 
 
+let coins =
+Number(localStorage.getItem("coins")) || 0;
+
+
 let mining=false;
 
-let seconds=86400;
+let mineTime=86400;
 
-let coins=localStorage.getItem("coins") || 0;
-let boxSeconds = 3600;
-let boxInterval = null;
+let boxTime=3600;
+
+let boxRunning=false;
+
+
 
 document.getElementById("coins").innerHTML=coins;
+
+
 
 
 
 function startMining(){
 
 
-if(mining) return;
+if(mining)return;
 
 
 mining=true;
 
 
-document.getElementById("mineBtn").innerHTML=
-"⛏️ Mining Started";
+let timer=setInterval(()=>{
 
 
+let h=Math.floor(mineTime/3600);
 
-let timer=setInterval(function(){
+let m=Math.floor((mineTime%3600)/60);
 
-
-
-let h=Math.floor(seconds/3600);
-
-let m=Math.floor((seconds%3600)/60);
-
-let s=seconds%60;
+let s=mineTime%60;
 
 
 
@@ -192,29 +176,147 @@ h+"h "+m+"m "+s+"s";
 
 
 
-seconds--;
+mineTime--;
 
 
 
-if(seconds < 0){
+if(mineTime<0){
 
 
 clearInterval(timer);
 
 
-
-document.getElementById("timer").innerHTML =
-"✅ Claim Your Coins";
-
+document.getElementById("timer").innerHTML=
+"✅ Claim";
 
 
-document.getElementById("mineBtn").innerHTML =
+document.getElementById("mineBtn").innerHTML=
 "💰 Claim";
 
 
+document.getElementById("mineBtn").onclick=
+claimMining;
 
-document.getElementById("mineBtn").onclick =
-claimCoins;
+
+}
+
+
+},1000);
+
+
+
+}
+
+
+
+
+
+function claimMining(){
+
+
+coins+=100;
+
+
+saveCoins();
+
+
+
+alert("💰 +100 Coins");
+
+
+}
+
+
+
+
+
+function saveCoins(){
+
+localStorage.setItem(
+"coins",
+coins
+);
+
+
+document.getElementById("coins").innerHTML=coins;
+
+}
+
+
+
+
+
+
+function mysteryBox(){
+
+
+
+if(boxRunning)return;
+
+
+boxRunning=true;
+
+
+boxTime=3600;
+
+
+
+let box=setInterval(()=>{
+
+
+let h=Math.floor(boxTime/3600);
+
+let m=Math.floor((boxTime%3600)/60);
+
+let s=boxTime%60;
+
+
+
+document.getElementById("boxTimer").innerHTML=
+h+"h "+m+"m "+s+"s";
+
+
+
+boxTime--;
+
+
+
+if(boxTime<0){
+
+
+clearInterval(box);
+
+
+
+boxRunning=false;
+
+
+
+let ad=confirm(
+"📺 Watch Ad to open Mystery Box"
+);
+
+
+
+if(ad){
+
+
+coins+=50;
+
+saveCoins();
+
+
+alert(
+"🎁 Mystery Box +50"
+);
+
+
+}
+
+
+
+document.getElementById("boxTimer").innerHTML=
+"Ready";
 
 
 }
@@ -231,154 +333,96 @@ claimCoins;
 
 
 
-function claimCoins(){
+
+function dailyReward(){
+
+
+let last=
+localStorage.getItem("daily");
 
 
 
-coins = Number(coins)+100;
-
-
-
-localStorage.setItem("coins",coins);
-
-
-
-document.getElementById("coins").innerHTML=coins;
-
-
-
-document.getElementById("timer").innerHTML =
-"Ready For Next Mining";
-
-
-
-document.getElementById("mineBtn").innerHTML =
-"⛏️ Start Mining";
-
-
-
-document.getElementById("mineBtn").onclick =
-startMining;
-
-
-
-mining=false;
-
-
-seconds=86400;
-
-
-
-}
-
-
-
-
-
-
-function mysteryBox(){
-
-
-
-let last =
-localStorage.getItem("boxTime");
-
-
-
-let now =
-Date.now();
-
-
-
-
-if(last){
-
-
-
-let remain =
-3600000 - (now-last);
-
-
-
-if(remain > 0){
-
-
-
-let m =
-Math.floor(remain/60000);
-
-
-
-let s =
-Math.floor((remain%60000)/1000);
-
+if(last && Date.now()-last<86400000){
 
 
 alert(
-"⏰ Mystery Box Unlock: "
-+m+"m "+s+"s"
+"⏰ Daily reward tomorrow"
 );
-
 
 
 return;
 
-
-
 }
 
 
 
-}
+coins+=25;
 
 
-
-
-
-let ad =
-confirm(
-"📺 Watch Ad to open Mystery Box"
-);
-
-
-
-
-if(ad){
-
-
-
-coins =
-Number(coins)+50;
+saveCoins();
 
 
 
 localStorage.setItem(
-"coins",
-coins
+"daily",
+Date.now()
 );
-
-
-
-localStorage.setItem(
-"boxTime",
-now
-);
-
-
-
-document.getElementById("coins").innerHTML =
-coins;
 
 
 
 alert(
-"🎁 Mystery Box +50 Coins"
+"🎁 Daily +25 Coins"
 );
-
 
 
 }
 
+
+
+
+
+
+
+function inviteFriends(){
+
+
+let code =
+"BIG"+Math.floor(Math.random()*999999);
+
+
+alert(
+"Your Invite Code:\n"+code
+);
+
+
+}
+
+
+
+
+
+
+function leaderboard(){
+
+
+alert(
+"🏆 Leaderboard\n\n1. Player 1 - 5000\n2. Player 2 - 3000\n3. You - "+coins
+);
+
+
+}
+
+
+
+
+
+
+function profile(){
+
+
+alert(
+"👤 Profile\n\nCoins: "+coins
+);
 
 
 }
@@ -390,5 +434,4 @@ alert(
 
 
 </body>
-
 </html>
