@@ -157,7 +157,55 @@ document.getElementById("mineBtn").onclick=startMining;
 
 
 
-function mysteryBox(){
+function function mysteryBox(){
+
+let last = localStorage.getItem("boxTime");
+
+let now = Date.now();
+
+
+if(last){
+
+let remain = 3600000 - (now - last);
+
+
+if(remain > 0){
+
+let m = Math.floor(remain / 60000);
+let s = Math.floor((remain % 60000) / 1000);
+
+alert(
+"⏰ Mystery Box Unlock: "+m+"m "+s+"s"
+);
+
+return;
+
+}
+
+}
+
+
+let ad = confirm("📺 Watch Ad to open Mystery Box");
+
+
+if(ad){
+
+coins = Number(coins)+50;
+
+localStorage.setItem("coins",coins);
+
+localStorage.setItem("boxTime",now);
+
+
+document.getElementById("coins").innerHTML=coins;
+
+
+alert("🎁 Mystery Box +50 Coins");
+
+
+}
+
+}{
 
 let last =
 localStorage.getItem("boxTime");
