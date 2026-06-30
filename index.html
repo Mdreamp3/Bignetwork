@@ -1,437 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>BigNetwork</title>
 
-<style>
-
-body{
-margin:0;
-background:#0d1117;
-font-family:Arial;
-color:white;
-text-align:center;
-}
-
-.header{
-background:#161b22;
-padding:20px;
-font-size:28px;
-font-weight:bold;
-}
-
-.card{
-background:#1f2937;
-margin:15px;
-padding:20px;
-border-radius:15px;
-}
-
-button{
-width:90%;
-padding:15px;
-margin:8px;
-border:0;
-border-radius:12px;
-font-size:18px;
-font-weight:bold;
-background:#00c853;
-color:white;
-}
-
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 
-
 <body>
 
-
-<div class="header">
-🚀 BigNetwork
-</div>
-
-
+<header>
+<h1>🚀 BigNetwork</h1>
+</header>
 
 <div class="card">
-
 <h2>💰 Coins</h2>
-
 <h1 id="coins">0</h1>
-
 </div>
-
-
-
-
-<button onclick="startMining()" id="mineBtn">
-⛏️ Start Mining
-</button>
-
 
 <div class="card">
-
-<h2>⛏ Mining Timer</h2>
-
-<h3 id="timer">
-Ready
-</h3>
-
+<h2>⛏️ Mining</h2>
+<p id="miningTimer">Ready to Mine</p>
+<button id="mineBtn">Start Mining</button>
 </div>
-
-
-
-<button onclick="mysteryBox()">
-📦 Mystery Box
-</button>
-
 
 <div class="card">
-
-<h2>📦 Mystery Box Timer</h2>
-
-<h3 id="boxTimer">
-Ready
-</h3>
-
+<h2>📦 Mystery Box</h2>
+<p id="boxTimer">Ready</p>
+<button id="boxBtn">Open Mystery Box</button>
 </div>
 
+<div class="card">
+<h2>🎁 Daily Reward</h2>
+<p id="dailyTimer">Ready</p>
+<button id="dailyBtn">Claim Reward</button>
+</div>
 
+<button class="menu">👥 Invite Friends</button>
 
-<button onclick="dailyReward()">
-🎁 Daily Reward
-</button>
+<button class="menu">🏆 Leaderboard</button>
 
+<button class="menu">👤 Profile</button>
 
-
-<button onclick="inviteFriends()">
-👥 Invite Friends
-</button>
-
-
-
-<button onclick="leaderboard()">
-🏆 Leaderboard
-</button>
-
-
-
-<button onclick="profile()">
-👤 Profile
-</button>
-
-
-
-
-
-<script>
-
-
-let coins =
-Number(localStorage.getItem("coins")) || 0;
-
-
-let mining=false;
-
-let mineTime=86400;
-
-let boxTime=3600;
-
-let boxRunning=false;
-
-
-
-document.getElementById("coins").innerHTML=coins;
-
-
-
-
-
-function startMining(){
-
-
-if(mining)return;
-
-
-mining=true;
-
-
-let timer=setInterval(()=>{
-
-
-let h=Math.floor(mineTime/3600);
-
-let m=Math.floor((mineTime%3600)/60);
-
-let s=mineTime%60;
-
-
-
-document.getElementById("timer").innerHTML =
-h+"h "+m+"m "+s+"s";
-
-
-
-mineTime--;
-
-
-
-if(mineTime<0){
-
-
-clearInterval(timer);
-
-
-document.getElementById("timer").innerHTML=
-"✅ Claim";
-
-
-document.getElementById("mineBtn").innerHTML=
-"💰 Claim";
-
-
-document.getElementById("mineBtn").onclick=
-claimMining;
-
-
-}
-
-
-},1000);
-
-
-
-}
-
-
-
-
-
-function claimMining(){
-
-
-coins+=100;
-
-
-saveCoins();
-
-
-
-alert("💰 +100 Coins");
-
-
-}
-
-
-
-
-
-function saveCoins(){
-
-localStorage.setItem(
-"coins",
-coins
-);
-
-
-document.getElementById("coins").innerHTML=coins;
-
-}
-
-
-
-
-
-
-function mysteryBox(){
-
-
-
-if(boxRunning)return;
-
-
-boxRunning=true;
-
-
-boxTime=3600;
-
-
-
-let box=setInterval(()=>{
-
-
-let h=Math.floor(boxTime/3600);
-
-let m=Math.floor((boxTime%3600)/60);
-
-let s=boxTime%60;
-
-
-
-document.getElementById("boxTimer").innerHTML=
-h+"h "+m+"m "+s+"s";
-
-
-
-boxTime--;
-
-
-
-if(boxTime<0){
-
-
-clearInterval(box);
-
-
-
-boxRunning=false;
-
-
-
-let ad=confirm(
-"📺 Watch Ad to open Mystery Box"
-);
-
-
-
-if(ad){
-
-
-coins+=50;
-
-saveCoins();
-
-
-alert(
-"🎁 Mystery Box +50"
-);
-
-
-}
-
-
-
-document.getElementById("boxTimer").innerHTML=
-"Ready";
-
-
-}
-
-
-
-},1000);
-
-
-
-}
-
-
-
-
-
-
-function dailyReward(){
-
-
-let last=
-localStorage.getItem("daily");
-
-
-
-if(last && Date.now()-last<86400000){
-
-
-alert(
-"⏰ Daily reward tomorrow"
-);
-
-
-return;
-
-}
-
-
-
-coins+=25;
-
-
-saveCoins();
-
-
-
-localStorage.setItem(
-"daily",
-Date.now()
-);
-
-
-
-alert(
-"🎁 Daily +25 Coins"
-);
-
-
-}
-
-
-
-
-
-
-
-function inviteFriends(){
-
-
-let code =
-"BIG"+Math.floor(Math.random()*999999);
-
-
-alert(
-"Your Invite Code:\n"+code
-);
-
-
-}
-
-
-
-
-
-
-function leaderboard(){
-
-
-alert(
-"🏆 Leaderboard\n\n1. Player 1 - 5000\n2. Player 2 - 3000\n3. You - "+coins
-);
-
-
-}
-
-
-
-
-
-
-function profile(){
-
-
-alert(
-"👤 Profile\n\nCoins: "+coins
-);
-
-
-}
-
-
-
-</script>
-
-
+<script src="script.js"></script>
 
 </body>
 </html>
