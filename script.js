@@ -62,7 +62,25 @@ return ${h}h ${m}m ${ss}s;
 setInterval(()=>{
 const now=Date.now();
 coinsEl.textContent=coins;
-document.getElementById('miningTimer').textContent=now<miningEnd?fmt(miningEnd-now):'Ready';
+if(now<miningEnd){
+
+ document.getElementById('miningTimer').textContent=fmt(miningEnd-now);
+
+ document.getElementById('mineBtn').innerText="Mining...";
+
+}else if(miningEnd!=0){
+
+ document.getElementById('miningTimer').textContent="✅ Mining Complete";
+
+ document.getElementById('mineBtn').innerText="Claim 100 Coins";
+
+}else{
+
+ document.getElementById('miningTimer').textContent="Ready";
+
+ document.getElementById('mineBtn').innerText="Start Mining";
+
+}
 document.getElementById('boxTimer').textContent=now<boxEnd?fmt(boxEnd-now):'Ready';
 document.getElementById('dailyTimer').textContent=now<dailyEnd?fmt(dailyEnd-now):'Ready';
 },1000);
