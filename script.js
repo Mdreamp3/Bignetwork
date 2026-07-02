@@ -7,9 +7,34 @@ const coinsEl=document.getElementById('coins');
 coinsEl.textContent=coins;
 
 document.getElementById('mineBtn').onclick=()=>{
-if(Date.now()<miningEnd){alert('Mining already running');return;}
-miningEnd=Date.now()+246060*1000;
-localStorage.setItem('miningEnd',miningEnd);
+
+ if(Date.now()>=miningEnd && miningEnd!=0){
+
+   coins+=100;
+
+   localStorage.setItem('coins',coins);
+
+   miningEnd=0;
+
+   localStorage.setItem('miningEnd',0);
+
+   alert("🎉 You received 100 Coins!");
+
+   return;
+ }
+
+ if(Date.now()<miningEnd){
+
+   alert("Mining already running!");
+
+   return;
+ }
+
+ miningEnd=Date.now()+24*60*60*1000;
+
+ localStorage.setItem('miningEnd',miningEnd);
+
+};
 };
 
 document.getElementById('boxBtn').onclick=()=>{
